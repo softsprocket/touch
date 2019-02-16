@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -49,5 +50,9 @@ func main() {
 		TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
 	}
 
-	srv.ListenAndServeTLS("server.crt", "server.key")
+	err := srv.ListenAndServeTLS("/etc/letsencrypt/live/gregmartin.name/fullchain.pem", "/etc/letsencrypt/live/gregmartin.name/privkey.pem")
+
+	if err != nil {
+		fmt.Printf("%v", err)
+	}
 }
