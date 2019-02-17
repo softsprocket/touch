@@ -17,7 +17,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	cert := os.Args[1]
-	ket := os.Args[2]
+	key := os.Args[2]
 
 	http.HandleFunc("/", handler)
 	// Start the HTTPS server in a goroutine
