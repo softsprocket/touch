@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 )
@@ -18,17 +18,23 @@ func redirect(w http.ResponseWriter, req *http.Request) {
 		http.StatusTemporaryRedirect)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hi there!")
+func index(w http.ResponseWriter, req *http.Request) {
+	// all calls to unknown url paths should return 404
+	if req.URL.Path != "/" {
+		log.Printf("404: %s", req.URL.String())
+		http.NotFound(w, req)
+		return
+	}
+	http.ServeFile(w, req, "index.html")
 }
 
 func main() {
-	cert := os.Args[1]
-	key := os.Args[2]
+	// redirect every http request to https
+	// serve index (and anything else) as https
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", index)
 
-	http.HandleFunc("/", handler)
-	// Start the HTTPS server in a goroutine
-	go http.ListenAndServeTLS(":https", cert, key, nil)
-	// Start the HTTP server and redirect all incoming connections to HTTPS
-	http.ListenAndServe(":http", http.HandlerFunc(redirect))
+	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
+
+	log.Fatal(http.ListenAndServeTLS(":443", os.Args[1], os.Args[2], mux))
 }
