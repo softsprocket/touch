@@ -2,8 +2,6 @@ package main
 
 import (
 	"crypto/tls"
-	"fmt"
-	"golang.org/x/crypto/acme/autocert"
 	"log"
 	"net/http"
 )
@@ -21,18 +19,11 @@ func redirect(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	certManager := autocert.Manager{
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("gregmartin.name", "www.gregmartin.name"), //Your domain here
-		Cache:      autocert.DirCache("/etc/letsencrypt/live/gregmartin.name/"),      //Folder for storing certificates
-	}
-
-	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
-		fmt.Fprintf(w, "Hello, TLS user! Your config: %+v", req.TLS)
+		w.Write([]byte("This is an example server.\n"))
 	})
 	cfg := &tls.Config{
 		MinVersion:               tls.VersionTLS12,
@@ -49,7 +40,6 @@ func main() {
 			tls.TLS_RSA_WITH_AES_256_CBC_SHA,
 			tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 		},
-		GetCertificate: certManager.GetCertificate,
 	}
 	srv := &http.Server{
 		Addr:         ":https",
@@ -58,7 +48,7 @@ func main() {
 		TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
 	}
 
-	log.Fatal(srv.ListenAndServeTLS("", ""))
+	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
 
-	//	log.Fatal(http.Serve(autocert.NewListener("gregmartin.name"), mux))
+	log.Fatal(srv.ListenAndServeTLS("/etc/letsencrypt/live/gregmartin.name/fullchain.pem", "/etc/letsencrypt/live/gregmartin.name/privkey.pem"))
 }
