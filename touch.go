@@ -2,53 +2,69 @@ package main
 
 import (
 	"crypto/tls"
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/user"
+	"path/filepath"
+
+	"golang.org/x/crypto/acme/autocert"
 )
 
-func redirect(w http.ResponseWriter, req *http.Request) {
-	// remove/add not default ports from req.Host
-	target := "https://" + req.Host + req.URL.Path
-	if len(req.URL.RawQuery) > 0 {
-		target += "?" + req.URL.RawQuery
-	}
-	log.Printf("redirect to: %s", target)
-	http.Redirect(w, req, target,
-		// see @andreiavrammsd comment: often 307 > 301
-		http.StatusTemporaryRedirect)
-}
-
 func main() {
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
-		w.Write([]byte("This is an example server.\n"))
+	// setup a simple handler which sends a HTHS header for six months (!)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Strict-Transport-Security", "max-age=15768000 ; includeSubDomains")
+		fmt.Fprintf(w, "Hello, HTTPS world!")
 	})
-	cfg := &tls.Config{
-		MinVersion:               tls.VersionTLS12,
-		CurvePreferences:         []tls.CurveID{tls.CurveP521, tls.CurveP384, tls.CurveP256},
-		PreferServerCipherSuites: true,
-		CipherSuites: []uint16{
-			tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-			tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-			tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
-			tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-			tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-			tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-			tls.TLS_RSA_WITH_AES_128_CBC_SHA,
-			tls.TLS_RSA_WITH_AES_256_CBC_SHA,
-			tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA,
+
+	// look for the domains to be served from command line args
+	flag.Parse()
+	domains := flag.Args()
+	if len(domains) == 0 {
+		log.Fatalf("fatal; specify domains as arguments")
+	}
+
+	// create the autocert.Manager with domains and path to the cache
+	certManager := autocert.Manager{
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist(domains...),
+	}
+
+	// optionally use a cache dir
+	dir := cacheDir()
+	if dir != "" {
+		certManager.Cache = autocert.DirCache(dir)
+	}
+
+	// create the server itself
+	server := &http.Server{
+		Addr: ":https",
+		TLSConfig: &tls.Config{
+			GetCertificate: certManager.GetCertificate,
 		},
 	}
-	srv := &http.Server{
-		Addr:         ":https",
-		Handler:      mux,
-		TLSConfig:    cfg,
-		TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
+
+	log.Printf("Serving http/https for domains: %+v", domains)
+	go func() {
+		// serve HTTP, which will redirect automatically to HTTPS
+		h := certManager.HTTPHandler(nil)
+		log.Fatal(http.ListenAndServe(":http", h))
+	}()
+
+	// serve HTTPS!
+	log.Fatal(server.ListenAndServeTLS("", ""))
+}
+
+// cacheDir makes a consistent cache directory inside /tmp. Returns "" on error.
+func cacheDir() (dir string) {
+	if u, _ := user.Current(); u != nil {
+		dir = filepath.Join(os.TempDir(), "cache-golang-autocert-"+u.Username)
+		if err := os.MkdirAll(dir, 0700); err == nil {
+			return dir
+		}
 	}
-
-	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
-
-	log.Fatal(srv.ListenAndServeTLS("/etc/letsencrypt/live/gregmartin.name/fullchain.pem", "/etc/letsencrypt/live/gregmartin.name/privkey.pem"))
+	return ""
 }
