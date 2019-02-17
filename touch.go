@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
+	"golang.org/x/crypto/acme/autocert"
 	"log"
 	"net/http"
 )
@@ -20,6 +21,12 @@ func redirect(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	certManager := autocert.Manager{
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist("gregmartin.name"), //Your domain here
+		Cache:      autocert.DirCache("certs"),                //Folder for storing certificates
+	}
+
 	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
 
 	mux := http.NewServeMux()
@@ -42,6 +49,7 @@ func main() {
 			tls.TLS_RSA_WITH_AES_256_CBC_SHA,
 			tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 		},
+		GetCertificate: certManager.GetCertificate,
 	}
 	srv := &http.Server{
 		Addr:         ":443",
