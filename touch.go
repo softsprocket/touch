@@ -7,7 +7,6 @@ import (
 )
 
 func redirect(w http.ResponseWriter, req *http.Request) {
-	// remove/add not default ports from req.Host
 	target := "https://" + req.Host + req.URL.Path
 	if len(req.URL.RawQuery) > 0 {
 		target += "?" + req.URL.RawQuery
@@ -19,13 +18,12 @@ func redirect(w http.ResponseWriter, req *http.Request) {
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
-	// all calls to unknown url paths should return 404
-	if req.URL.Path != "/" {
+	if req.URL.Path != "/" && req.URL.Path != "/index.html" {
 		log.Printf("404: %s", req.URL.String())
 		http.NotFound(w, req)
 		return
 	}
-	http.ServeFile(w, req, "index.html")
+	http.ServeFile(w, req, "wwwroot/index.html")
 }
 
 func main() {
