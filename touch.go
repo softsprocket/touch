@@ -23,8 +23,8 @@ func redirect(w http.ResponseWriter, req *http.Request) {
 func main() {
 	certManager := autocert.Manager{
 		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("gregmartin.name"), //Your domain here
-		Cache:      autocert.DirCache("certs"),                //Folder for storing certificates
+		HostPolicy: autocert.HostWhitelist("gregmartin.name", "www.gregmartin.name"), //Your domain here
+		Cache:      autocert.DirCache("/etc/letsencrypt/live/gregmartin.name/"),      //Folder for storing certificates
 	}
 
 	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
@@ -32,7 +32,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
-		w.Write([]byte("This is an example server.\n"))
+		fmt.Fprintf(w, "Hello, TLS user! Your config: %+v", req.TLS)
 	})
 	cfg := &tls.Config{
 		MinVersion:               tls.VersionTLS12,
@@ -52,15 +52,13 @@ func main() {
 		GetCertificate: certManager.GetCertificate,
 	}
 	srv := &http.Server{
-		Addr:         ":443",
+		Addr:         ":https",
 		Handler:      mux,
 		TLSConfig:    cfg,
 		TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
 	}
 
-	err := srv.ListenAndServeTLS("/etc/letsencrypt/live/gregmartin.name/fullchain.pem", "/etc/letsencrypt/live/gregmartin.name/privkey.pem")
+	log.Fatal(srv.ListenAndServeTLS("", ""))
 
-	if err != nil {
-		fmt.Printf("%v", err)
-	}
+	//	log.Fatal(http.Serve(autocert.NewListener("gregmartin.name"), mux))
 }
