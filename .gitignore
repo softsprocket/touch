@@ -1,6 +1,8 @@
 *.swp
 touch
+node_modules
 cert.pem
 key.pem
+keycreate.txt
 
 

@@ -4,7 +4,17 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
+	"touch/hosts"
 )
+
+var hostMap = map[string]hosts.Host{
+	"softsprocket.com":  hosts.Host{BaseDir: "./wwwroot/softsprocket.com/"},
+	"softsprocket.info": hosts.Host{BaseDir: "./wwwroot/softsprocket.info/"},
+	"gregmartin.name":   hosts.Host{BaseDir: "./wwwroot/gregmartin.name/"},
+	"gmartin.name":      hosts.Host{BaseDir: "./wwwroot/gmartin.name/"},
+	"localhost":         hosts.Host{BaseDir: "./wwwroot/"},
+}
 
 func redirect(w http.ResponseWriter, req *http.Request) {
 	target := "https://" + req.Host + req.URL.Path
@@ -12,27 +22,17 @@ func redirect(w http.ResponseWriter, req *http.Request) {
 		target += "?" + req.URL.RawQuery
 	}
 	log.Printf("redirect to: %s", target)
-	http.Redirect(w, req, target,
-		// see @andreiavrammsd comment: often 307 > 301
-		http.StatusTemporaryRedirect)
+	http.Redirect(w, req, target, http.StatusTemporaryRedirect)
 }
 
-func index(w http.ResponseWriter, req *http.Request) {
-	if req.URL.Path != "/" && req.URL.Path != "/index.html" {
-		log.Printf("404: %s", req.URL.String())
-		http.NotFound(w, req)
-		return
-	}
-	http.ServeFile(w, req, "wwwroot/index.html")
+func manifold(w http.ResponseWriter, req *http.Request) {
+	host := strings.Replace(strings.ToLower(req.Host), "www.", "", 1)
+	hostMap[host].Handler(w, req)
 }
 
 func main() {
-	// redirect every http request to https
-	// serve index (and anything else) as https
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", index)
 
 	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
 
-	log.Fatal(http.ListenAndServeTLS(":443", os.Args[1], os.Args[2], mux))
+	log.Fatal(http.ListenAndServeTLS(":443", os.Args[1], os.Args[2], http.HandlerFunc(manifold)))
 }
