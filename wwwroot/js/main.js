@@ -167,6 +167,11 @@ class Element {
 	setMaxHeight (height) {
 		this.setStyleValue('maxHeight', height);
 	}
+
+	setAttribute (key, value) {
+		this.el.setAttribute(key, value);
+	}
+
 }
 
 
@@ -392,13 +397,38 @@ menupopup_MenuPopup.MenuItem = class extends Element {
 class copyright_Copyright extends Element {
 	constructor(str) {
 		super('span');
+		this.addClass('base-copyright');
 		var dt = new Date();
 		this.setInnerHTML('&copy; ' + str + ' ' + dt.getFullYear());
 	}
 }
 
 
+// CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/responsive.js
+
+
+
+class Responsive {
+	constructor () {
+		var metaTags = document.getElementsByTagName("meta");
+		for (var i = 0; i < metaTags.Length; ++i) {
+			var name = metaTags[i].getAttribute("name");
+			if (name && name == "viewport") {
+				this.viewportMeta = metaTags[i];
+			}
+		}
+	}
+
+	viewportTagSet () {
+		return this.viewportMeta != undefined;
+	}
+}
+
+
+
+
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket.js
+
 
 
 
@@ -416,7 +446,8 @@ var SoftSprocket = {
 	MenuIcon: Object.assign(menuicon_MenuIcon),
 	Popup: Object.assign(popup_Popup),
 	MenuPopup: Object.assign(menupopup_MenuPopup),
-	Copyright: Object.assign(copyright_Copyright)
+	Copyright: Object.assign(copyright_Copyright),
+	Responsive: Object.assign(Responsive)
 };
 
 
@@ -426,6 +457,8 @@ var SoftSprocket = {
 
 
 onload = function () {
+	var responsive = new softsprocket.Responsive ();
+
 	var header = new softsprocket.Header ();
 	document.body.appendChild (header.getEl());
 

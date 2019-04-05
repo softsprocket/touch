@@ -1,0 +1,23 @@
+[
+	{
+		"Host": "localhost",
+		"BaseDir": "./wwwroot/"
+	},
+	{
+		"Host": "softsprocket.com",
+		"BaseDir": "./wwwroot/softsprocket.com/"
+	},
+	{
+		"Host": "softsprocket.info",
+		"BaseDir": "./wwwroot/softsprocket.info/"
+	},
+	{
+		"Host": "gregmartin.name",
+		"BaseDir": "./wwwroot/gregmartin.name/"
+	},
+	{
+		"Host": "gmartin.name",
+		"BaseDir": "./wwwroot/gmartin.name/"
+	}
+]
+

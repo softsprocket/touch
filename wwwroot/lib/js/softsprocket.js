@@ -6,6 +6,7 @@ import MenuIcon from './softsprocket/menuicon.js'
 import Popup from './softsprocket/popup.js'
 import MenuPopup from './softsprocket/menupopup.js'
 import Copyright from './softsprocket/copyright.js'
+import Responsive from './softsprocket/responsive.js'
 
 var SoftSprocket = {
 	Element: Object.assign(Element),
@@ -15,7 +16,8 @@ var SoftSprocket = {
 	MenuIcon: Object.assign(MenuIcon),
 	Popup: Object.assign(Popup),
 	MenuPopup: Object.assign(MenuPopup),
-	Copyright: Object.assign(Copyright)
+	Copyright: Object.assign(Copyright),
+	Responsive: Object.assign(Responsive)
 };
 
 

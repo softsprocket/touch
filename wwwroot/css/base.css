@@ -123,6 +123,12 @@ body {
 	border-width: 1px;
 }
 
+.base-copyright {
+	color: orange;
+	margin: 10px;
+	line-height: 40px;
+}
+
 .show {
   visibility: visible;
   -webkit-animation: fadeIn 1s;

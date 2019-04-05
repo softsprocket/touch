@@ -1,6 +1,6 @@
-import Popup from './popup.js'
-import Header from './header.js'
-import Element from './element.js'
+import Popup from './popup.js';
+import Header from './header.js';
+import Element from './element.js';
 
 export default class MenuPopup extends Popup {
 	constructor () {

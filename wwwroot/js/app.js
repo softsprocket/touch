@@ -1,6 +1,8 @@
 import SoftSprocket from '../lib/js/softsprocket.js'
 
 onload = function () {
+	var responsive = new SoftSprocket.Responsive ();
+
 	var header = new SoftSprocket.Header ();
 	document.body.appendChild (header.getEl());
 

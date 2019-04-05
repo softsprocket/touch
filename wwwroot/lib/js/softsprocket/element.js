@@ -73,6 +73,11 @@ export default class Element {
 	setMaxHeight (height) {
 		this.setStyleValue('maxHeight', height);
 	}
+
+	setAttribute (key, value) {
+		this.el.setAttribute(key, value);
+	}
+
 }
 
 
