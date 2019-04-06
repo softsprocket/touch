@@ -37,7 +37,7 @@ body {
 
 .softsprocket-title-box {
 	display: inline-block;
-	color: gold;
+	color: lightgreen;
 	padding: 5px;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 	line-height: 70px;
@@ -49,14 +49,14 @@ body {
 	float: right;
 	line-height: 70px;
 	padding: 5px 10px 5px 10px;
-	color: gold;
+	color: lightgreen;
 	cursor: pointer;
 }
 
 .softsprocket-floating-menu {
 	width: 400px;
 	background-color: grey;
-	color: gold;
+	color: lightgreen;
 	position: fixed;
 	border: none;  
 }	
@@ -67,12 +67,12 @@ body {
 
 .softsprocket-floating-header {
 	width: 100%;
-	background-color: gold;
+	background-color: lightgreen;
 	color: grey;
 	position: relative;
 	top: 0px;
 	left: 0px;
-	border-bottom: 1px solid gold;
+	border-bottom: 1px solid lightgreen;
 	display: inline-block;
 	padding: 5px 10px 5px 10px;
 	line-height: 40px;
@@ -91,20 +91,20 @@ body {
 
 .softsprocket-floating-menu-element {
 	background-color: grey;
-	color: gold;
+	color: lightgreen;
 	cursor: pointer;
 	padding: 5px 10px 5px 10px;
 }
 
 .softsprocket-floating-text-element {
 	background-color: grey;
-	color: gold;
+	color: lightgreen;
 	padding-left: 0px;
 }
 
 .softsprocket-submenu-indicator {
 	background-color: grey;
-	color: gold;
+	color: lightgreen;
 	float:right;
 }
 
@@ -113,8 +113,8 @@ body {
 	position: relative;
 	vertical-align: bottom;
 	background-color: grey;
-	color: gold;
-	border-bottom: 1px solid gold;
+	color: lightgreen;
+	border-bottom: 1px solid lightgreen;
 	padding: 5px 10px 5px 10px;
 	line-height: 30px;
 }
@@ -124,14 +124,14 @@ body {
 	right: 10px;
 	line-height: 30px;
 	background-color: grey;
-	color: gold;
+	color: lightgreen;
 	
 }
 
 .softsprocket-footer-info {
 	line-height: 30px;
 	background-color: grey;
-	color: gold;
+	color: lightgreen;
 	padding: 5px 10px 5px 10px;
 	cursor: pointer;
 }
@@ -139,7 +139,7 @@ body {
 .softsprocket-inputwin-content {
 	width: 100%;
 	background-color: grey;
-	color: gold;
+	color: lightgreen;
 	padding: 10px 0px 0px 10px;
 
 }
