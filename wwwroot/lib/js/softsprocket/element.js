@@ -78,6 +78,15 @@ export default class Element {
 		this.el.setAttribute(key, value);
 	}
 
+	getHeight () {
+		var positionInfo = this.el.getBoundingClientRect();
+		return positionInfo.height;
+	}
+
+	getWidth () {
+		var positionInfo = this.el.getBoundingClientRect();
+		return positionInfo.width;
+	}
 }
 
 

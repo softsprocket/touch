@@ -462,7 +462,7 @@ var SoftSprocket = {
 
 /* harmony default export */ var softsprocket = (SoftSprocket);
 
-// CONCATENATED MODULE: ./wwwroot/js/app.js
+// CONCATENATED MODULE: ./wwwroot/softsprocket-com/js/app.js
 
 
 onload = function () {
@@ -476,7 +476,7 @@ onload = function () {
 
 	footer.appendChild(new softsprocket.Copyright('SoftSprocket'));
 
-	var title = new softsprocket.Title("Hello, World");
+	var title = new softsprocket.Title("SoftSprocket");
 	header.appendChild(title);
 
 	var menuIcon = new softsprocket.MenuIcon();
@@ -492,10 +492,10 @@ onload = function () {
 
 		if (!menuPopup.showing) {
 			if(!configured) {		
-				menuPopup.setWidth ('200px');
-				menuPopup.setMaxHeight ('300px');
-				menuPopup.setRight ('50px');
-				menuPopup.setTop ('100px');
+				menuPopup.setWidth ('300px');
+				menuPopup.setRight ('0px');
+				menuPopup.setTop (`${header.getHeight()}px`);
+				menuPopup.setBottom (`${footer.getHeight()}px`);
 
 				menuPopup.setMenuItems ([
 					{
