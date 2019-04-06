@@ -4,5 +4,7 @@ node_modules
 cert.pem
 key.pem
 keycreate.txt
+cert_chain.txt
+touchsrv
 
 
