@@ -114,11 +114,12 @@ body {
 
 .base-menuitem-subcontainer {
 	display: none;
-	background-color: darkgray;
+	background-color: grey;
 }
 
 .base-menuitem-subitem {
-	border-width: 1px;
+	background-color: grey;
+	margin: 10px;
 }
 
 .base-copyright {

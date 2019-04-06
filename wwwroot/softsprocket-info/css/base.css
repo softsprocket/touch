@@ -32,7 +32,7 @@ body {
 
 .base-title {
 	display: inline-block;
-	color: limegreen;
+	color: gold;
 	padding: 5px;
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 	line-height: 70px;
@@ -54,7 +54,7 @@ body {
 }
 
 .base-menu-icon-style {
-	color: limegreen;
+	color: gold;
 	cursor: pointer;
 	text-align: center;
 	font-size: 50px;
@@ -65,13 +65,13 @@ body {
 .base-popup {
 	width: 400px;
 	background-color: grey;
-	color: limegreen;
+	color: gold;
 	position: fixed;
 	visibility: hidden;
 }	
 
 .base-menu-header {
-	background-color: limegreen;
+	background-color: gold;
 	color: grey;
 	padding: 5px;
 	height: 30px;
@@ -97,9 +97,9 @@ body {
 }
 
 .base-menuitem-top {
-	border-color: limegreen;
+	border-color: gold;
 	background-color: grey;
-	color: limegreen;
+	color: gold;
 }
 
 .base-menuitem-container {
@@ -114,15 +114,16 @@ body {
 
 .base-menuitem-subcontainer {
 	display: none;
-	background-color: darkgray;
+	background-color: grey;
 }
 
 .base-menuitem-subitem {
-	border-width: 1px;
+	background-color: grey;
+	margin: 10px;
 }
 
 .base-copyright {
-	color: limegreen;
+	color: gold;
 	margin: 10px;
 	line-height: 40px;
 }
@@ -142,4 +143,3 @@ body {
   from {opacity: 0;}
   to {opacity:1;}
 }
-
