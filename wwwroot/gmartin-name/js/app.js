@@ -11,7 +11,7 @@ onload = function () {
 
 	footer.appendChild(new SoftSprocket.Copyright('SoftSprocket'));
 
-	var title = new SoftSprocket.Title("SoftSprocket");
+	var title = new SoftSprocket.Title("GMartin");
 	header.appendChild(title);
 
 	var menuIcon = new SoftSprocket.MenuIcon();
@@ -71,6 +71,12 @@ onload = function () {
 						text: "Links",
 						menuItems:[
 							{
+								text: "SoftSprocket",
+								action: function (ev) {
+									window.location.href = "https://www.softsprocket.com";
+								}
+							},
+							{
 								text: "SoftSprocket Info",
 								action: function (ev) {
 									window.location.href = "https://www.softsprocket.info";
@@ -80,12 +86,6 @@ onload = function () {
 								text: "Greg Martin",
 								action: function (ev) {
 									window.location.href = "https://www.gregmartin.name";
-								}
-							},
-							{
-								text: "GMartin",
-								action: function (ev) {
-									window.location.href = "https://www.gmartin.name";
 								}
 							}
 						]

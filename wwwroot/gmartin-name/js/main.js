@@ -462,7 +462,7 @@ var SoftSprocket = {
 
 /* harmony default export */ var softsprocket = (SoftSprocket);
 
-// CONCATENATED MODULE: ./wwwroot/softsprocket-com/js/app.js
+// CONCATENATED MODULE: ./wwwroot/gmartin-name/js/app.js
 
 
 onload = function () {
@@ -476,7 +476,7 @@ onload = function () {
 
 	footer.appendChild(new softsprocket.Copyright('SoftSprocket'));
 
-	var title = new softsprocket.Title("SoftSprocket");
+	var title = new softsprocket.Title("GMartin");
 	header.appendChild(title);
 
 	var menuIcon = new softsprocket.MenuIcon();
@@ -536,6 +536,12 @@ onload = function () {
 						text: "Links",
 						menuItems:[
 							{
+								text: "SoftSprocket",
+								action: function (ev) {
+									window.location.href = "https://www.softsprocket.com";
+								}
+							},
+							{
 								text: "SoftSprocket Info",
 								action: function (ev) {
 									window.location.href = "https://www.softsprocket.info";
@@ -545,12 +551,6 @@ onload = function () {
 								text: "Greg Martin",
 								action: function (ev) {
 									window.location.href = "https://www.gregmartin.name";
-								}
-							},
-							{
-								text: "GMartin",
-								action: function (ev) {
-									window.location.href = "https://www.gmartin.name";
 								}
 							}
 						]

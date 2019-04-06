@@ -11,7 +11,7 @@ onload = function () {
 
 	footer.appendChild(new SoftSprocket.Copyright('SoftSprocket'));
 
-	var title = new SoftSprocket.Title("SoftSprocket");
+	var title = new SoftSprocket.Title("SoftSprocket Info");
 	header.appendChild(title);
 
 	var menuIcon = new SoftSprocket.MenuIcon();
@@ -71,9 +71,9 @@ onload = function () {
 						text: "Links",
 						menuItems:[
 							{
-								text: "SoftSprocket Info",
+								text: "SoftSprocket",
 								action: function (ev) {
-									window.location.href = "https://www.softsprocket.info";
+									window.location.href = "https://www.softsprocket.com";
 								}
 							},
 							{
@@ -90,6 +90,7 @@ onload = function () {
 							}
 						]
 					}
+					
 				]);
 				configured = true;
 			}
