@@ -5,6 +5,7 @@ import Element from './element.js';
 export default class MenuPopup extends Popup {
 	constructor () {
 		super();
+		this.addClass('base-menu-popup');
 		this.header = new Element('header');
 		this.header.addClass('base-menu-header');
 		this.appendChild(this.header);
@@ -67,6 +68,21 @@ MenuPopup.MenuItem = class extends Element {
 		}
 	}
 
+	expandAction (ev) {
+		if (this.expanded) {
+			this.angle.removeClass('fa-angle-up');
+			this.angle.addClass('fa-angle-down');
+			this.subElementContainer.addClass('base-menuitem-subcontainer');
+			this.expanded = false;
+		} else {
+			this.angle.removeClass('fa-angle-down');
+			this.angle.addClass('fa-angle-up');
+			this.subElementContainer.removeClass('base-menuitem-subcontainer');
+
+			this.expanded = true;
+		}
+	}
+
 	addExpander () {
 		this.expanded = false;
 		this.expander = new Element('span');
@@ -74,21 +90,10 @@ MenuPopup.MenuItem = class extends Element {
 		this.angle = new Element('i');
 		this.angle.addClass('fas');
 		this.angle.addClass('fa-angle-down');
+		this.angle.addEventListener('click', this.expandAction.bind(this));
 		this.expander.appendChild(this.angle);
 		this.contentElement.appendChild(this.expander);
-		this.expander.addEventListener('click', function (ev) {
-			if (this.expanded) {
-				this.angle.removeClass('fa-angle-up');
-				this.angle.addClass('fa-angle-down');
-				this.subElementContainer.addClass('base-menuitem-subcontainer');
-				this.expanded = false;
-			} else {
-				this.angle.removeClass('fa-angle-down');
-				this.angle.addClass('fa-angle-up');
-				this.subElementContainer.removeClass('base-menuitem-subcontainer');
-
-				this.expanded = true;
-			}
-		}.bind(this));
+		this.contentElement.addEventListener('click', this.expandAction.bind(this));
+		this.expander.addEventListener('click', this.expandAction.bind(this));
 	}
 }

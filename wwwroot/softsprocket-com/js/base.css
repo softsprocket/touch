@@ -1,0 +1,401 @@
+:root {
+	--main-color: black;
+	--contrast-bg-color: grey;
+	--main-bg-color: white;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html, body {
+    height:100%;
+}
+
+body {
+	margin-top: 80px;
+	margin-bottom: 40px;
+}
+
+.base-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: var(--contrast-bg-color);
+	height: 80px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.base-content-div {
+	position: fixed;
+	top: 80px;
+	left: 0px;
+	width: 100%;
+	bottom: 40px;
+}
+
+.base-footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: var(--contrast-bg-color);
+	height: 40px;
+}
+
+
+.base-title {
+	display: inline-block;
+	color: var(--main-color);
+	padding: 5px;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	line-height: 70px;
+	font-size: 250%;
+}
+
+.base-main {
+/*	margin-left: 10%;
+	margin-right: 10%; */
+	background-color: var(--main-bg-color);
+}
+
+.base-icon-style {
+	color: var(--main-color);
+	cursor: pointer;
+	text-align: center;
+}
+
+.base-menu-icon {
+	position: absolute;
+	right: 0px;  
+	top: 0px;  
+	width: 70px;
+	height: 70px;
+	margin: auto;
+}
+
+.base-menu-icon-style {
+	font-size: 50px;
+	margin: 10px;
+}
+
+
+.base-popup {
+	background-color: var(--contrast-bg-color);
+	color: var(--main-color);
+	visibility: hidden;
+}	
+
+.base-menu-popup {
+	width: 400px;
+	position: fixed;
+	z-index: 20;
+}
+
+.base-menu-header {
+	background-color: var(--main-color);
+	color: var(--contrast-bg-color);
+	padding: 5px;
+	height: 30px;
+}
+
+.base-menu-header-text {
+	color: var(--contrast-bg-color);
+	font-size: 20px;
+	text-align: left;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.base-menu-body {
+	overflow: auto;
+}
+
+.base-menuitem {
+	height: 30px;
+	margin: 2px;
+	padding: 2px;
+	font-size: 16px;
+	border: none;
+}
+
+.base-menuitem-top {
+	background-color: var(--contrast-bg-color);
+	color: var(--main-color);
+	cursor: pointer; 
+}
+
+.base-menuitem-container {
+	position: relative;
+}
+
+.base-menuitem-expander {
+	position: absolute;
+	right: 10px;
+	cursor: pointer; 
+}
+
+.base-menuitem-subcontainer {
+	display: none;
+	background-color: var(--contrast-bg-color);
+}
+
+.base-menuitem-subitem {
+	background-color: var(--contrast-bg-color);
+	margin: 10px;
+}
+
+.base-copyright {
+	color: var(--main-color);
+	margin: 10px;
+	line-height: 40px;
+}
+
+.show {
+  visibility: visible !important;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1;}
+}
+
+.base-buttongroup-div {
+	height: 30px;
+}
+
+.base-horizontal-buttongroup-div {
+	display: flex;
+	flex-direction: row;	
+}
+
+.base-vertical-buttongroup-div {
+	display: flex;
+	flex-direction: column;
+}
+
+.base-labeled-input {
+
+}
+
+.base-label {
+
+}
+
+.base-textarea {
+	height: 100px; 
+	line-height: 20px;
+}
+
+.base-email-input {
+	height: 30px;
+}
+
+.base-text-input {
+	height: 30px;
+}
+
+.base-button-input {
+	color: var(--contrast-bg-color);
+	background-color: var(--main-color);
+	border: none;
+	height: 30px;
+	width: 70px;
+	margin: 1px;
+	font-weight: bold;
+}
+
+.base-contact-div {
+	background-color: var(--contrast-bg-color);
+	border-color: var(--main-color);
+	border-style: solid;
+	border-width: 1;
+	width: 40%;
+	padding: 10px;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+	transform: translate(-50%, -50%);	
+
+	display: flex;
+	justify-content: center;
+	flex-direction: column;  
+}
+
+.base-continue-popup {
+	display: flex;
+	justify-content: center;
+	flex-direction: column; 
+	z-index: 100;	 
+	background-color: var(--contrast-bg-color);
+}
+
+.base-continue-text-popup {
+	margin-left: auto;
+	margin-right: auto;
+	background-color: var(--contrast-bg-color);
+	color: var(--main-color);
+}
+
+.base-continue-button {
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.base-contact-error-msg {
+	color: red;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+.base-rbt-input {
+	border: none;
+	background-color: var(--contrast-bg-color);
+	height: 0px;
+}
+
+.base-rbt-input::placeholder {
+	color: var(--contrast-bg-color);
+}
+
+.base-editor {
+	position: relative;
+	top: 10px;
+	width: 60%;
+	height: 75%;
+	margin: 0 auto;
+	background-color: var(--main-bg-color);
+	/*border-left: 1px solid var(--contrast-bg-color);
+	border-right: 1px solid var(--contrast-bg-color);*/
+	z-index: 2;
+}
+
+.base-editor-header {
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: var(--contrast-bg-color);
+	height: 60px;
+	padding: 20px;
+	line-height: 60px;
+	display: -webkit-flex; /* Safari */
+  -webkit-flex-direction: row-reverse; /* Safari 6.1+ */
+  display: flex;
+  flex-direction: row;
+}
+
+.base-editor-displayarea {
+	width: 100%;
+	height: 100%;
+	background-color: var(--main-bg-color);
+	border-left: 1px solid var(--contrast-bg-color);
+	border-right: 1px solid var(--contrast-bg-color);
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
+.base-editor-footer {
+	position: relative;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: var(--contrast-bg-color);
+	height: 40px;
+}
+
+.base-editor-toolbar-icon-style {
+	font-size: 20px;
+}
+
+.base-panel {
+	visibility: hidden;
+	z-index: 5;
+	position: relative;
+}
+
+.base-select {
+	background-color: var(--contrast-bg-color);
+	color: var(--main-color);
+	border: var(--main-color) 1px solid;
+	height: 30px;
+	line-height: 30px;
+	cursor: pointer;
+}
+
+.base-select-text-display {
+	color: var(--main-color);
+	font-size: 16px;
+	margin-left: 5px;
+}
+
+.base-select-arrow {
+	color: var(--main-color);
+	font-size: 20px;
+	float: right;
+	margin-right: 5px;
+}
+
+.base-option {
+	background-color: var(--contrast-bg-color);
+	color: var(--main-color);
+	height: 30px;
+	width: 250px;
+	line-height: 30px;
+	border-bottom: var(--main-color) 1px dotted;
+	padding-left: 8px;
+	cursor: pointer;
+}
+
+
+.base-editor-select {
+	width: 250px;
+	margin-left: 10px;
+}
+
+.base-editor-select-options-panel {
+	width: 250px;
+	margin-left: 10px;
+}
+
+.editor-heading-one {
+	color: black;
+	font-size: 18px;
+	text-align: center;
+} 
+ 
+.editor-heading-two {
+	color: black;
+	font-size: 16px;
+	text-align: left;
+}  
+
+.editor-heading-three {
+	color: black;
+	font-size: 14px;
+	text-align: left;
+}
+
+.editor-preformatted {
+
+}
+
+.editor-paragraph {
+
+}
+
+.editor-anchor {
+
+}  

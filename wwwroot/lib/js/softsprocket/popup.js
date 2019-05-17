@@ -32,5 +32,9 @@ export default class Popup extends Element {
 	setRight (pos) {
 		this.setStyleValue('right', pos)
 	}
+
+	setZIndex (value) {
+		this.setStyleValue('z-index', value);
+	}
 }
 

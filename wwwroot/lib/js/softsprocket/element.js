@@ -49,14 +49,26 @@ export default class Element {
 		this.el.dispatchEvent(ev);
 	}
 
-	setInnerHTML (html) {
-		this.el.innerHTML = html;
+	setInnerHTML (txt) {
+		this.el.innerHTML = txt;
 	}
 
-	appendChild (cls) {
-		this.el.appendChild(cls.el);
+	getInnerHTML () {
+		return this.el.innerHTML;
 	}
 
+	appendInnerHTML (txt) {
+		this.el.innerHTML += txt;
+	}
+
+	appendChild (obj) {
+		this.parent = obj;
+		this.el.appendChild(obj.el);
+	}
+
+	getParent () {
+		return this.parent;
+	}
 
 	setStyleValue (type, value) {
 		this.el.style[type] = value;	
@@ -78,6 +90,14 @@ export default class Element {
 		this.el.setAttribute(key, value);
 	}
 
+	getAttribute (key) {
+		this.el.getAttribute(key);
+	}
+
+	removeAttribute (key) {
+		this.el.removeAttribute (key);
+	}	
+
 	getHeight () {
 		var positionInfo = this.el.getBoundingClientRect();
 		return positionInfo.height;
@@ -86,6 +106,29 @@ export default class Element {
 	getWidth () {
 		var positionInfo = this.el.getBoundingClientRect();
 		return positionInfo.width;
+	}
+
+	removeChildren () {
+		while (this.el.firstChild) {
+			this.el.removeChild(this.el.firstChild);
+		}
+	}
+	
+	removeChild (child) {
+		this.el.removeChild(child.el);
+	}
+
+
+	getBoundingClientRect () {
+		return this.el.getBoundingClientRect();
+	}
+
+	focus () {
+		this.el.focus();
+	}
+
+	getTagName () {
+		return this.el.tagName;
 	}
 }
 

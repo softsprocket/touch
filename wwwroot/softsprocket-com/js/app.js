@@ -34,12 +34,12 @@ onload = function () {
 
 				menuPopup.setMenuItems ([
 					{
-						text: "hello",
+						text: "Wise and Otherwise",
 						menuItems:[
 							{
-								text: "world",
+								text: "Editor",
 								action: function (ev) {
-									console.log (ev);
+									router.request ('/editor');
 								}
 							},
 							{
@@ -51,7 +51,7 @@ onload = function () {
 						]
 					},
 					{
-						text: "hello",
+						text: "Bits and Bytes",
 						menuItems:[
 							{
 								text: "world",
@@ -89,6 +89,12 @@ onload = function () {
 								}
 							}
 						]
+					},
+					{
+						text: "Contact",
+						action: function (ev) {
+							router.request ("/contact");
+						}
 					}
 				]);
 				configured = true;
@@ -99,4 +105,49 @@ onload = function () {
 		}
 
 	});
+	
+
+	var contentDiv = new SoftSprocket.Element("div");
+	contentDiv.addClass ('base-content-div');
+
+	document.body.appendChild(contentDiv.getEl());
+
+
+	var router = new SoftSprocket.Router (
+		{
+			"/contact": {				
+				action: function () {
+					contentDiv.removeChildren();
+					var contact = new SoftSprocket.Contact(function () {
+						var obj = {
+							Name: contact.getName(),
+							Email: contact.getEmail(),
+							Message: contact.getMessage()
+						};
+
+						var request = new SoftSprocket.Communication.Request ();
+						request.post("api/contact", JSON.stringify(obj), function () {
+							console.log (request.responseText);
+						});
+					});
+					contentDiv.appendChild(contact);
+				}
+			},
+			"/editor": {
+				action: function () {
+					contentDiv.removeChildren();
+					var editor = new SoftSprocket.Editor();
+					contentDiv.appendChild (editor);
+
+				}
+			}
+
+		},
+		function () {
+			contentDiv.removeChildren();
+		}				
+	);
+
+	console.log ("path", router.getPathname());
+	router.request(router.getPathname());
 }

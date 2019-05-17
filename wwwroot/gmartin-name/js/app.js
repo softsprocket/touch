@@ -89,7 +89,14 @@ onload = function () {
 								}
 							}
 						]
+					},
+					{
+						text: "Contact",
+						action: function (ev) {
+							router.request ("/contact");
+						}
 					}
+
 				]);
 				configured = true;
 			}
@@ -99,4 +106,27 @@ onload = function () {
 		}
 
 	});
+
+
+	var contentDiv = new SoftSprocket.Element("div");
+	document.body.appendChild(contentDiv.getEl());
+
+	var router = new SoftSprocket.Router (
+		{
+			"/contact": {				
+				action: function () {
+					contentDiv.removeChildren();
+					var contact = new SoftSprocket.Contact(function () {
+						console.log ("Hello, World!");
+					});
+					contentDiv.appendChild(contact);
+				}
+			}
+		},
+		function () {
+			contentDiv.removeChildren();
+		}				
+	);
+
+	console.log ("path", router.getPathname());
 }

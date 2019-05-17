@@ -21,7 +21,7 @@ export default class FontAwesome extends Element {
 
 		this.addClass('fas');
 		this.addClass(cls);
-		this.addClass('base-menu-icon-style');
+		this.addClass('base-icon-style');
 	}
 
 }

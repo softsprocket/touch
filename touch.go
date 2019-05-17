@@ -13,31 +13,6 @@ import (
 
 var hostMap = map[string]hosts.Host{}
 
-/*
-var hostMap = map[string]hosts.Host{
-	"softsprocket.com": hosts.Host{
-		BaseDir:        "./wwwroot/softsprocket.com/",
-		SessionManager: session.NewSessionManager(),
-	},
-	"softsprocket.info": hosts.Host{
-		BaseDir:        "./wwwroot/softsprocket.info/",
-		SessionManager: session.NewSessionManager(),
-	},
-	"gregmartin.name": hosts.Host{
-		BaseDir:        "./wwwroot/gregmartin.name/",
-		SessionManager: session.NewSessionManager(),
-	},
-	"gmartin.name": hosts.Host{
-		BaseDir:        "./wwwroot/gmartin.name/",
-		SessionManager: session.NewSessionManager(),
-	},
-	"localhost": hosts.Host{
-		BaseDir:        "./wwwroot/",
-		SessionManager: session.NewSessionManager(),
-	},
-}
-*/
-
 func redirect(w http.ResponseWriter, req *http.Request) {
 	target := "https://" + req.Host + req.URL.Path
 	if len(req.URL.RawQuery) > 0 {
@@ -53,22 +28,17 @@ func manifold(w http.ResponseWriter, req *http.Request) {
 	hostMap[host].Handler(w, req)
 }
 
-type HostConfig struct {
-	Host    string
-	BaseDir string
-}
-
 func main() {
 
 	b, err := ioutil.ReadFile("conf/hosts.json")
 	if err != nil {
-		log.Printf("Error loading config file: %s\n", err)
+		log.Printf("Error loading hosts config file: %s\n", err)
 		return
 	}
 
 	log.Printf("%s\n", b)
 
-	var hostConfig []HostConfig
+	var hostConfig []hosts.Host
 	err = json.Unmarshal(b, &hostConfig)
 	if err != nil {
 		log.Printf("Error loading config file: %s", err)
@@ -77,10 +47,17 @@ func main() {
 
 	for i := 0; i < len(hostConfig); i++ {
 		h := hostConfig[i]
-		log.Printf("%s @ %s\n", h.Host, h.BaseDir)
+		log.Printf("%s @ %s\n%s", h.Host, h.BaseDir, h.Replace)
+
 		hostMap[h.Host] = hosts.Host{
 			BaseDir:        h.BaseDir,
 			SessionManager: session.NewSessionManager(),
+			Replace:        map[string]string{},
+			ApiActions:     h.ApiActions,
+		}
+
+		for k, v := range h.Replace {
+			hostMap[h.Host].Replace[k] = v
 		}
 	}
 

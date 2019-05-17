@@ -1,23 +1,63 @@
 [
 	{
 		"Host": "localhost",
-		"BaseDir": "./wwwroot/"
+		"BaseDir": "./wwwroot/softsprocket-com",
+		"Replace": {
+			"/contact": "/",
+			"/editor": "/"
+		},
+		"ApiActions": [{
+			"Match": "/api/contact",
+			"Plugin": "./plugs/contact/contact.so"
+		}]
 	},
 	{
 		"Host": "softsprocket.com",
-		"BaseDir": "./wwwroot/softsprocket-com/"
+		"BaseDir": "./wwwroot/softsprocket-com",
+		"Replace": {
+			"/contact": "/",
+			"/editor": "/"
+		},
+		"ApiActions": [{
+			"Match": "/api/contact",
+			"Plugin": "./plugs/contact/contact.so"
+		}]
 	},
 	{
 		"Host": "softsprocket.info",
-		"BaseDir": "./wwwroot/softsprocket-info/"
+		"BaseDir": "./wwwroot/softsprocket-info",
+		"Replace": {
+			"/contact": "/",
+			"/editor": "/"
+		},
+		"ApiActions": [{
+			"Match": "/api/contact",
+			"Plugin": "./plugs/contact/contact.so"
+		}]
 	},
 	{
 		"Host": "gregmartin.name",
-		"BaseDir": "./wwwroot/gregmartin-name/"
+		"BaseDir": "./wwwroot/gregmartin-name",
+		"Replace": {
+			"/contact": "/",
+			"/editor": "/"
+		},
+		"ApiActions": [{
+			"Match": "/api/contact",
+			"Plugin": "./plugs/contact/contact.so"
+		}]
 	},
 	{
 		"Host": "gmartin.name",
-		"BaseDir": "./wwwroot/gmartin-name/"
+		"BaseDir": "./wwwroot/gmartin-name",
+		"Replace": {
+			"/contact": "/",
+			"/editor": "/"
+		},
+		"ApiActions": [{
+			"Match": "/api/contact",
+			"Plugin": "./plugs/contact/contact.so"
+		}]
 	}
 ]
 
