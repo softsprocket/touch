@@ -2,8 +2,9 @@
 import Element from '../element.js';
 
 export default class Anchor extends Element {
-    constructor () {
+    constructor (cls) {
         super ('a');
+        this.addClass(cls);
     }
     
 }

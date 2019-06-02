@@ -3,6 +3,7 @@
  * to mofify it
 */
 
+import SelectionEvents from "./mouse/selection.js";
 
 export default class Element {
 	constructor (type) {
@@ -129,6 +130,23 @@ export default class Element {
 
 	getTagName () {
 		return this.el.tagName;
+	}
+
+	setEditable (mode) {
+		if (mode == true) {
+			if (this.selection == undefined) {
+				this.selection = new SelectionEvents.Selection (this);
+				this.selectionClear = new SelectionEvents.SelectionClear (this);
+			}
+			this.setAttribute('contentEditable', true);
+		} else {
+			if (this.selection != undefined) {
+				delete this.selection;
+				delete this.selectionClear;
+			}
+
+			this.removeAttribute('contentEditable');
+		}
 	}
 }
 

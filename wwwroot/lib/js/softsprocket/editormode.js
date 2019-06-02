@@ -2,6 +2,7 @@ import Heading from '../softsprocket/textlayout/heading.js';
 import Preformatted  from './textlayout/preformatted.js';
 import Paragraph from '../softsprocket/textlayout/paragraph.js';
 import Anchor from '../softsprocket/textlayout/anchor.js';
+import Editor from './editor.js';
 
 export default class EditorMode {
     constructor(value, text) {
@@ -79,9 +80,9 @@ class PreformattedMode extends EditorMode {
     }
 }
 
-class AnchorMode extends EditorMode {
+class AnchorSelection extends EditorMode {
     constructor () {
-        super (5, 'Anchor');
+        super (0, 'Anchor');
     }
 
     createElement (cls) {
@@ -89,10 +90,13 @@ class AnchorMode extends EditorMode {
     }
 }
 
+
 EditorMode.Modes = {};
 EditorMode.Modes.HeadingOne = Object.assign(HeadingOneMode);
 EditorMode.Modes.HeadingTwo = Object.assign(HeadingTwoMode);
 EditorMode.Modes.HeadingThree = Object.assign(HeadingThreeMode);
 EditorMode.Modes.Paragraph = Object.assign(ParagraphMode);
 EditorMode.Modes.Preformatted = Object.assign(PreformattedMode);
-EditorMode.Modes.Anchor = Object.assign(AnchorMode);
+
+EditorMode.Selections = {};
+EditorMode.Selections.Anchor = Object.assign(AnchorSelection);

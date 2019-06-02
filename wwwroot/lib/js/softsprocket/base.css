@@ -2,12 +2,17 @@
 	--main-color: black;
 	--contrast-bg-color: grey;
 	--main-bg-color: white;
+	--main-article-text: rgb(56,56,56);
+	--main-anchor-color: blue;
 }
 
 * {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	margin: 0; 
+	padding: 0; 
+	border: 0; 
 }
 
 html, body {
@@ -177,15 +182,17 @@ body {
 .base-horizontal-buttongroup-div {
 	display: flex;
 	flex-direction: row;	
+	justify-content: center;
 }
 
 .base-vertical-buttongroup-div {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 }
 
 .base-labeled-input {
-
+	
 }
 
 .base-label {
@@ -303,8 +310,9 @@ body {
 	background-color: var(--main-bg-color);
 	border-left: 1px solid var(--contrast-bg-color);
 	border-right: 1px solid var(--contrast-bg-color);
-	overflow-x: auto;
+	overflow-x: hidden;
 	overflow-y: auto;
+	overflow-wrap: break-word; 
 }
 
 .base-editor-footer {
@@ -352,7 +360,7 @@ body {
 	background-color: var(--contrast-bg-color);
 	color: var(--main-color);
 	height: 30px;
-	width: 250px;
+	width: 150px;
 	line-height: 30px;
 	border-bottom: var(--main-color) 1px dotted;
 	padding-left: 8px;
@@ -361,7 +369,7 @@ body {
 
 
 .base-editor-select {
-	width: 250px;
+	width: 150px;
 	margin-left: 10px;
 }
 
@@ -371,31 +379,88 @@ body {
 }
 
 .editor-heading-one {
-	color: black;
+	color: var(--main-article-text);
 	font-size: 18px;
 	text-align: center;
+	padding-top: 18px;
 } 
  
 .editor-heading-two {
-	color: black;
+	color: var(--main-article-text);
 	font-size: 16px;
 	text-align: left;
+	margin-left: 20px;
+	padding-top: 18px;
 }  
 
 .editor-heading-three {
-	color: black;
+	color: var(--main-article-text);
 	font-size: 14px;
 	text-align: left;
+	margin-left: 40px;
+	padding-top: 16px;
+	text-decoration-line: underline;
 }
 
 .editor-preformatted {
-
+	color: var(--main-article-text);
+	font-size: 10px;
+	margin-left: 40px;
+	margin-right: 40px;
+	padding-top: 8px;
 }
 
 .editor-paragraph {
-
+	color: var(--main-article-text);
+	font-size: 12px;
+	margin-left: 40px;
+	margin-right: 40px;
+	padding-top: 8px;
 }
 
 .editor-anchor {
+	font-size: inherit;
+	cursor: pointer;
+	color: var(--main-anchor-color);
+}
 
-}  
+.editor-anchor-editor {
+	color: var(--main-color);
+	border: solid 2px var(--main-color);
+	padding: 3px;
+	background-color: var(--contrast-bg-color);
+	width: 500px;
+	height: 175px;
+	font-family: 'Courier New', Courier, monospace;
+}
+
+.anchor-editor-text {
+	width: 450px;
+	position: relative;
+	background-color: var(--contrast-bg-color);
+	left: 25px;
+}
+
+.anchor-editor-selected-text {
+	width:375px;
+}
+
+.anchor-editor-link {
+	width: 450px;
+	position: relative;
+	background-color: var(--contrast-bg-color);
+	left: 25px;
+	margin-top: 3px;
+}
+
+.anchor-editor-link-text {
+	width:375px;
+}
+
+.anchor-editor-buttongroup {
+	width: 450px;
+	position: relative;
+	background-color: var(--contrast-bg-color);
+	left: 25px;
+	margin-top: 3px;
+}

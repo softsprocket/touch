@@ -23355,6 +23355,50 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: ./wwwroot/lib/js/softsprocket/base.css
 var base = __webpack_require__(72);
 
+// CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/mouse/selection.js
+
+class Selection extends Event {
+    constructor (el) {
+        super ("selection");
+        this.el = el;
+        this.el.addEventListener ('mouseup', function () {
+            var sel = document.getSelection();
+            var range = sel.getRangeAt(0);
+            console.log (sel, range);
+            console.log (range.startOffset, range.endOffset);
+            if (range.endOffset != range.startOffset) {
+                this.range = range;
+                this.selection = sel;
+                this.el.dispatchEvent (this);
+            }
+        }.bind(this));
+    }
+
+}
+
+class SelectionClear extends Event {
+    constructor (el) {
+        super ("selectionClear");
+        this.el = el;
+        this.el.addEventListener ('mouseup', function () {
+            var sel = document.getSelection();
+            var range = sel.getRangeAt(0);
+            console.log (sel, range);
+            console.log (range.startOffset, range.endOffset);
+            if (range.endOffset == range.startOffset) {
+                this.el.dispatchEvent (this);
+            }
+        }.bind(this));
+    }
+
+}
+
+var SelectionEvents = {
+    Selection: Object.assign(Selection),
+    SelectionClear: Object.assign(SelectionClear)
+};
+
+/* harmony default export */ var mouse_selection = (SelectionEvents);
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/element.js
 /*
  * creates an html element and provides methods 
@@ -23362,7 +23406,8 @@ var base = __webpack_require__(72);
 */
 
 
-class Element {
+
+class element_Element {
 	constructor (type) {
 		this.el = document.createElement(type);
 	}
@@ -23488,6 +23533,23 @@ class Element {
 	getTagName () {
 		return this.el.tagName;
 	}
+
+	setEditable (mode) {
+		if (mode == true) {
+			if (this.selection == undefined) {
+				this.selection = new mouse_selection.Selection (this);
+				this.selectionClear = new mouse_selection.SelectionClear (this);
+			}
+			this.setAttribute('contentEditable', true);
+		} else {
+			if (this.selection != undefined) {
+				delete this.selection;
+				delete this.selectionClear;
+			}
+
+			this.removeAttribute('contentEditable');
+		}
+	}
 }
 
 
@@ -23496,7 +23558,7 @@ class Element {
 
 
 
-class footer_Footer extends Element {
+class footer_Footer extends element_Element {
 	constructor () {
 		super('footer');
 		this.addClass('base-footer');
@@ -23507,7 +23569,7 @@ class footer_Footer extends Element {
 
 
 
-class header_Header extends Element {
+class header_Header extends element_Element {
 	constructor () {
 		super('header');
 		this.addClass('base-header');
@@ -23518,7 +23580,7 @@ class header_Header extends Element {
 
 
 
-class title_Title extends Element {
+class title_Title extends element_Element {
 	constructor (html) {
 		super('div');
 		this.addClass('base-title');
@@ -23531,7 +23593,7 @@ class title_Title extends Element {
 
 
 
-class fontawesome_FontAwesome extends Element {
+class fontawesome_FontAwesome extends element_Element {
 	constructor(cls) {
 		super('i');
 
@@ -23563,7 +23625,7 @@ fontawesome_FontAwesome.hasBeenLoaded = false;
 
 
 
-class menuicon_MenuIcon extends Element {
+class menuicon_MenuIcon extends element_Element {
 	
 	constructor () {
 		super('div');
@@ -23577,7 +23639,7 @@ class menuicon_MenuIcon extends Element {
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/popup.js
 
 
-class popup_Popup extends Element {
+class popup_Popup extends element_Element {
 	constructor() {
 		super('div');
 		this.addClass('base-popup');
@@ -23625,17 +23687,17 @@ class menupopup_MenuPopup extends popup_Popup {
 	constructor () {
 		super();
 		this.addClass('base-menu-popup');
-		this.header = new Element('header');
+		this.header = new element_Element('header');
 		this.header.addClass('base-menu-header');
 		this.appendChild(this.header);
 
-		this.headerText = new Element('span');
+		this.headerText = new element_Element('span');
 		this.headerText.addClass('base-menu-header-text');
 		this.headerText.setInnerHTML('Menu');
 
 		this.header.appendChild(this.headerText);
 
-		this.body = new Element('div');
+		this.body = new element_Element('div');
 		this.body.addClass('base-menu-body');
 		this.appendChild(this.body);
 
@@ -23654,25 +23716,25 @@ class menupopup_MenuPopup extends popup_Popup {
 	}	
 }
 
-menupopup_MenuPopup.MenuItem = class extends Element {
+menupopup_MenuPopup.MenuItem = class extends element_Element {
 	constructor(menu) {
 		super('div');
 		this.menu = menu;
 		this.addClass('base-menuitem');
-		this.contentElement = new Element('div');
+		this.contentElement = new element_Element('div');
 		this.contentElement.addClass('base-menuitem-container');
 		this.appendChild(this.contentElement);
 	}
 
 	configure (config, cls) {
 		this.addClass(cls);
-		this.text = new Element('span');
+		this.text = new element_Element('span');
 		this.text.setInnerHTML(config.text);
 		this.contentElement.appendChild(this.text);
 
 		if (config.menuItems) {
 			this.addExpander();	
-			this.subElementContainer = new Element('div');
+			this.subElementContainer = new element_Element('div');
 			this.subElementContainer.addClass('base-menuitem-subcontainer');
 			this.menu.appendChild(this.subElementContainer);
 
@@ -23704,9 +23766,9 @@ menupopup_MenuPopup.MenuItem = class extends Element {
 
 	addExpander () {
 		this.expanded = false;
-		this.expander = new Element('span');
+		this.expander = new element_Element('span');
 		this.expander.addClass('base-menuitem-expander');
-		this.angle = new Element('i');
+		this.angle = new element_Element('i');
 		this.angle.addClass('fas');
 		this.angle.addClass('fa-angle-down');
 		this.angle.addEventListener('click', this.expandAction.bind(this));
@@ -23720,7 +23782,7 @@ menupopup_MenuPopup.MenuItem = class extends Element {
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/copyright.js
 
 
-class copyright_Copyright extends Element {
+class copyright_Copyright extends element_Element {
 	constructor(str) {
 		super('span');
 		this.addClass('base-copyright');
@@ -23756,7 +23818,7 @@ class Responsive {
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/inputs/input.js
 
 
-class input_Input extends Element {
+class input_Input extends element_Element {
     constructor(type) {
         super('input');
         this.setAttribute('type', type);
@@ -23868,7 +23930,7 @@ var Inputs = {
 
 
 
-class label_Label extends Element {
+class label_Label extends element_Element {
 	constructor (name, value) {
         super('label');
         this.setAttribute("name", name);
@@ -23882,7 +23944,7 @@ class label_Label extends Element {
 
 
 
-class textarea_TextArea extends Element {
+class textarea_TextArea extends element_Element {
 	constructor () {
 		super('textarea');
         this.addClass('base-textarea');
@@ -23908,7 +23970,7 @@ class textarea_TextArea extends Element {
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/buttongroup.js
 
 
-class buttongroup_ButtonGroup extends Element {
+class buttongroup_ButtonGroup extends element_Element {
     constructor (direction) {
         super ('div');
 
@@ -23936,7 +23998,7 @@ buttongroup_ButtonGroup.Direction = {
 
 
 
-class contact_Contact extends Element {
+class contact_Contact extends element_Element {
     constructor(handler) {
         super('div');
         this.addClass('base-contact-div');
@@ -23990,7 +24052,7 @@ class contact_Contact extends Element {
 
         this.appendChild(this.buttonGroup);
 
-        this.outputMessageDiv = new Element ('div');
+        this.outputMessageDiv = new element_Element ('div');
         this.outputMessageDiv.addClass ('base-contact-error-msg');
         this.appendChild (this.outputMessageDiv);
 
@@ -24019,7 +24081,7 @@ class contact_ContinuePopup extends popup_Popup {
 
         this.addClass ("base-continue-popup");
   
-        var textEl = new Element ('div');
+        var textEl = new element_Element ('div');
         textEl.addClass ("base-continue-text-popup");
         textEl.setInnerHTML ("One more thing if you don't mind.")
 
@@ -24095,7 +24157,7 @@ class Router {
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/panel.js
 
 
-class panel_Panel extends Element {
+class panel_Panel extends element_Element {
     constructor() {
         super('panel');
         this.addClass('base-panel');
@@ -24141,7 +24203,7 @@ var crypto_browserify = __webpack_require__(76);
 
 
 
-class select_Select extends Element {
+class select_Select extends element_Element {
     constructor(options) {
         super ('div');
         this.addClass("base-select");
@@ -24210,7 +24272,7 @@ class select_Select extends Element {
     }
 } 
 
-class select_Option extends Element {
+class select_Option extends element_Element {
     constructor(value, text) {
         super('div');
         this.addClass('base-option')
@@ -24219,7 +24281,7 @@ class select_Option extends Element {
     }
 }
 
-class select_SelectTextDisplay extends Element {
+class select_SelectTextDisplay extends element_Element {
     constructor() {
         super('span');
         this.addClass('base-select-text-display');
@@ -24230,7 +24292,7 @@ class select_SelectTextDisplay extends Element {
     }
 }
 
-class select_SelectArrow extends Element {
+class select_SelectArrow extends element_Element {
     constructor() {
         super ('span');
         this.addClass ('base-select-arrow');
@@ -24262,7 +24324,7 @@ class select_SelectArrow extends Element {
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/textlayout/heading.js
 
 
-class heading_Heading extends Element {
+class heading_Heading extends element_Element {
     constructor (el) {
         super (el);
     }
@@ -24299,9 +24361,10 @@ heading_Heading.Three = Object.assign(Three);
 
 
 
-class preformatted_Preformatted extends Element {
-    constructor () {
+class preformatted_Preformatted extends element_Element {
+    constructor (cls) {
         super ('pre');
+        this.addClass(cls);
     }
     
 }
@@ -24310,9 +24373,10 @@ class preformatted_Preformatted extends Element {
 
 
 
-class paragraph_Paragraph extends Element {
-    constructor () {
+class paragraph_Paragraph extends element_Element {
+    constructor (cls) {
         super ('p');
+        this.addClass(cls);
     }
     
 }
@@ -24320,14 +24384,16 @@ class paragraph_Paragraph extends Element {
 
 
 
-class anchor_Anchor extends Element {
-    constructor () {
+class anchor_Anchor extends element_Element {
+    constructor (cls) {
         super ('a');
+        this.addClass(cls);
     }
     
 }
 
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/editormode.js
+
 
 
 
@@ -24409,9 +24475,9 @@ class editormode_PreformattedMode extends EditorMode {
     }
 }
 
-class editormode_AnchorMode extends EditorMode {
+class editormode_AnchorSelection extends EditorMode {
     constructor () {
-        super (5, 'Anchor');
+        super (0, 'Anchor');
     }
 
     createElement (cls) {
@@ -24419,13 +24485,28 @@ class editormode_AnchorMode extends EditorMode {
     }
 }
 
+
 EditorMode.Modes = {};
 EditorMode.Modes.HeadingOne = Object.assign(editormode_HeadingOneMode);
 EditorMode.Modes.HeadingTwo = Object.assign(editormode_HeadingTwoMode);
 EditorMode.Modes.HeadingThree = Object.assign(editormode_HeadingThreeMode);
 EditorMode.Modes.Paragraph = Object.assign(editormode_ParagraphMode);
 EditorMode.Modes.Preformatted = Object.assign(editormode_PreformattedMode);
-EditorMode.Modes.Anchor = Object.assign(editormode_AnchorMode);
+
+EditorMode.Selections = {};
+EditorMode.Selections.Anchor = Object.assign(editormode_AnchorSelection);
+// CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/labeledinput.js
+
+
+class labeledinput_LabeledInput extends element_Element {
+    constructor (label, input) {
+        super('div');
+
+        this.addClass('base-labeled-input');        
+        this.appendChild(label);
+        this.appendChild(input);
+    }   
+} 
 // CONCATENATED MODULE: ./wwwroot/lib/js/softsprocket/editor.js
 
 
@@ -24434,7 +24515,17 @@ EditorMode.Modes.Anchor = Object.assign(editormode_AnchorMode);
 
 
 
-class editor_Editor extends Element {
+
+
+
+
+
+
+
+//import Preformatted from "./textlayout/preformatted.js";
+
+
+class editor_Editor extends element_Element {
     constructor () {
         super ('div');
         this.addClass ('base-editor');
@@ -24444,14 +24535,22 @@ class editor_Editor extends Element {
         this.appendChild (this.header);
         this.appendChild (this.displayArea);
         this.appendChild (this.footer);
-        this.document = new Element ('div');
+        this.document = new element_Element ('div');
+        this.displayArea.addEventListener('click', function (ev) {
+            var name = ev.target.getAttribute ('name');
+            if (name == undefined) {
+                this.header.modeSelect.setDisplayText ("Select Mode");
+                this.header.selectionSelect.setAttribute('hidden', '');
+            }
+        }.bind(this));
+
         this.displayArea.appendChild (this.document);
         this.activeElement = undefined;
     }
 }
 
 
-class editor_EditorHeader extends Element {
+class editor_EditorHeader extends element_Element {
     constructor (editor) {
         super ('header');
         this.editor = editor;
@@ -24476,7 +24575,7 @@ class editor_EditorHeader extends Element {
         }
         
         this.modeSelect = new select_Select (modes);
-
+    
         this.modeSelect.addClass('base-editor-select');
         this.modeSelect.setDisplayText ("Select Mode");
         this.modeSelect.addOptionsPanelClass('base-editor-select-options-panel');
@@ -24485,49 +24584,208 @@ class editor_EditorHeader extends Element {
         this.numElements = 0;
 
         this.modeSelect.onSelect (function (n) {
+            var mo = this.modeObjects[n];
+            var txt = mo.getText();     
+            this.modeSelect.setDisplayText(txt);
+            
             if (this.editor.activeElement != undefined) {
-                this.editor.activeElement.removeAttribute ('contentEditable');
+                this.editor.activeElement.setEditable (false);
                 if (this.editor.activeElement.getInnerHTML ().Length == 0) {
                     this.editor.document.removeChild (this.editor.activeElement);
                 }
             }
 
-            var mo = this.modeObjects[n];
-            var txt = mo.getText();            
-            this.modeSelect.setDisplayText(txt);
             var el = mo.createElement (editor_Editor.ModeClasses[txt]);
-            this.currentElements[this.numElements] = el;
-            el.setAttribute('name', this.numElements);
-            this.numElements++;
-
-            el.addEventListener('click', function (ev) {
-                if (this.editor.activeElement != undefined) {
-                    this.editor.activeElement.removeAttribute ('contentEditable');
-                    if (this.editor.activeElement.getInnerHTML ().Length == 0) {
-                        this.editor.document.removeChild (this.editor.activeElement);
-                    }
-                }
-
-                console.log (ev, ev.target);
-                var name = ev.target.getAttribute ('name');
-                this.editor.activeElement = this.currentElements[name];
-                this.editor.activeElement.setAttribute ('contentEditable', true);
-                this.editor.activeElement.focus();
-            }.bind(this));
-
-            this.editor.document.appendChild(el);
-            this.editor.activeElement = el;
-
-            this.editor.activeElement.setAttribute ('contentEditable', true);
-
-            this.editor.activeElement.focus();
+            
+            this.addElement (el);       
 
         }.bind(this))
 
         this.appendChild(this.modeSelect);
+
+        this.selectionObjects = [];
+        var selections = [];
+
+        for (var selection in EditorMode.Selections) {
+            if (EditorMode.Selections.hasOwnProperty (selection)) {
+                var m = new EditorMode.Selections[selection]();
+                this.selectionObjects[m.getValue ()] = m;
+                selections[m.getValue ()] = {
+                    text: m.getText(),
+                    value: m.getValue()
+                };
+            }
+        }
+        
+        this.selectionSelect = new select_Select (selections);
+
+        this.selectionSelect.addClass('base-editor-select');
+        this.selectionSelect.setDisplayText ("Selection");
+        this.selectionSelect.addOptionsPanelClass('base-editor-select-options-panel');
+        this.selectionSelect.setAttribute('hidden', ''); 
+        this.currentSelectionElements = [];
+        this.numElements = 0;
+
+        this.selectionSelect.onSelect (function (n) {
+            var mo = this.selectionObjects[n];
+            var txt = mo.getText();     
+            console.log ('selection', txt);
+            this.selectionSelect.setDisplayText(txt);
+           
+            if (txt == "Anchor") {
+                console.log ('currentSelection', this.currentSelection);
+                console.log ('currentSelection range', this.currentSelection.range);
+                console.log ('currentSelection selection', this.currentSelection.selection);
+
+                var range = this.currentSelection.range;
+
+                var rect = range.getBoundingClientRect();
+
+                var txt = range.startContainer.data;
+                console.log (txt.slice(range.startOffset, range.endOffset));
+                var displayVal = txt.slice(range.startOffset, range.endOffset);
+                var preDisplay = txt.slice(0, range.startOffset);
+                var postDisplay = txt.slice(range.endOffset, txt.length);
+                console.log (preDisplay, postDisplay);
+
+                console.log ('rect', rect);
+                var anchorEditor = new editor_AnchorEditor(displayVal, function () {
+                    var link = anchorEditor.link.getValue();
+                    if (link == "") {
+                        return;
+                    }
+
+                    var anchor = new anchor_Anchor('editor-anchor');
+                    anchor.setInnerHTML (displayVal);
+                    anchor.setAttribute('href', link);
+
+                    console.log (anchor.el);
+
+                    var result = preDisplay + anchor.el.outerHTML + postDisplay;
+                    console.log (result);
+                    this.editor.activeElement.setInnerHTML(result);
+                    anchorEditor.hide();
+                    this.removeChild(anchorEditor);
+                }.bind(this), function () { 
+                    anchorEditor.hide();
+                    this.removeChild(anchorEditor);
+                }.bind (this));
+
+                var offset = range.offsetLeft - Math.floor (anchorEditor.getWidth() / 2);
+                anchorEditor.setTop (range.offsetTop + 'px');
+                anchorEditor.setLeft (offset + 'px');
+                this.appendChild(anchorEditor);
+                anchorEditor.show ();
+            }
+
+            console.log (txt, editor_Editor.SelectionClasses[txt]);
+
+            var el = mo.createElement (editor_Editor.SelectionClasses[txt]);
+            
+            console.log (el);    
+
+        }.bind(this))
+
+        this.appendChild(this.selectionSelect);
+
+
+
     }
 
+    onSelection (ev) {
+        console.log ('onSelection', ev)
+        if (this.editor.activeElement.getTagName () != "PRE")  {
+           this.selectionSelect.removeAttribute('hidden'); 
+           this.currentSelection = ev;
+            console.log ('onSelection', this.currentSelection);
+        }
+    }
+    
+    onSelectionClear (ev) {
+        console.log ('onSelectionClear', ev)
+        if (this.editor.activeElement.getTagName () != "PRE")  {
+           this.selectionSelect.setAttribute('hidden', true); 
+           this.currentSelection = undefined;
+        }
+    }
+    
+    
+    addElement (el) {
 
+        if (this.editor.activeElement != undefined) {
+            this.editor.activeElement.removeEventListener('selection', this.onSelection.bind(this));
+            this.editor.activeElement.removeEventListener('selectionClear', this.onSelectionClear.bind(this));
+        }
+
+        this.currentElements[this.numElements] = el;
+        this.numElements++;
+        el.setAttribute('name', this.numElements);
+
+        el.addEventListener('click', function (ev) {
+            if (this.editor.activeElement != undefined) {
+                this.editor.activeElement.setEditable(false);
+                if (this.editor.activeElement.getInnerHTML ().Length == 0) {
+                    this.removeElement (this.editor.activeElement);
+                }
+            }
+
+            var name = ev.target.getAttribute ('name');
+            this.editor.activeElement = this.currentElements[name - 1];
+            var tagname = this.editor.activeElement.getTagName();
+
+
+            switch (tagname) {
+                case 'H1':
+                    this.modeSelect.setDisplayText('Heading One');
+                    break;
+                case 'H2':
+                    this.modeSelect.setDisplayText('Heading Two');
+                    break;
+                case 'H3':
+                    this.modeSelect.setDisplayText('Heading Three');
+                    break;
+                case 'P':
+                    this.modeSelect.setDisplayText('Paragraph');
+                    break;
+                case 'PRE':
+                    this.modeSelect.setDisplayText('Preformatted');
+                    break;
+            }
+
+            this.editor.activeElement.setEditable(true);
+            this.editor.activeElement.focus();
+        }.bind(this));
+
+        this.editor.document.appendChild(el);
+
+        this.editor.activeElement = el;
+        this.editor.activeElement.setEditable(true);
+        
+        this.editor.activeElement.addEventListener('selection', this.onSelection.bind(this));
+        this.editor.activeElement.addEventListener('selectionClear', this.onSelectionClear.bind(this));
+
+        this.editor.activeElement.focus();
+
+    }
+
+    removeElement (el) {
+        el.removeEventListener('selection', this.selectListener.bind(this));
+        el.removeEventListener('selectionClear', this.onSelectionClear.bind(this));
+
+        this.editor.document.removeChild (el);
+        var name = el.getAttribute('name');
+        
+        if (this.numElements != name) { 
+            for (var i = name; i < this.numElements - 1; ++i) {
+                this.currentElements[i] = this.currentElements[i + 1];
+                this.currentElements[i].setAttribute('name', i);
+            }
+
+        }
+
+        delete this.currentElements[this.numElements];
+        this.numElements--;
+    }
 }
 
 editor_Editor.ModeClasses = {
@@ -24535,11 +24793,14 @@ editor_Editor.ModeClasses = {
     'Heading Two': 'editor-heading-two',  
     'Heading Three': 'editor-heading-three',
     'Preformatted': 'editor-preformatted',
-    'Paragraph': 'editor-paragraph',
-    'Anchor': 'editor-anchor'  
+    'Paragraph': 'editor-paragraph'
 };
 
-class editor_EditorFooter extends Element {
+editor_Editor.SelectionClasses = {
+    'Anchor': 'editor-anchor'
+}
+
+class editor_EditorFooter extends element_Element {
     constructor () {
         super ('footer');
         this.addClass ('base-editor-footer');
@@ -24550,7 +24811,6 @@ function isIn (tagName, tags) {
 
     for (var i in tags) {
         var tag = tags[i];
-        console.log (tag, tagName, tag == tagName);
         if (tagName == tag) {
             return true;
         }
@@ -24559,7 +24819,7 @@ function isIn (tagName, tags) {
     return false;
 }
 
-class editor_EditorDisplayArea extends Element {
+class editor_EditorDisplayArea extends element_Element {
     constructor (editor) {
         super ('div');
         this.editor = editor;
@@ -24569,21 +24829,91 @@ class editor_EditorDisplayArea extends Element {
 
         this.addEventListener('keydown', function (e) {
             if (this.editor.activeElement) {
-                console.log (e.keyCode, e.key);
                 if (e.isComposing || e.keyCode === 229) {
                     return;
                 }
 
-                if (e.key == "Enter" && isIn (this.editor.activeElement.getTagName(), ['H1', 'H2', 'H3'])) {
+                var activeEl = this.editor.activeElement;
+
+                var tagname = activeEl.getTagName();
+                
+
+                if (e.key == "Enter" && isIn (tagname, ['H1', 'H2', 'H3', 'P'])) {
+                    var header = this.editor.header;
+                    
+                    if (activeEl.getInnerHTML().trim () == "") {
+                        header.removeElement (activeEl);
+                    }
+
+                    var modeSelect = header.modeSelect; 
+                    switch (tagname) {
+                        case 'H1':
+                            activeEl = new heading_Heading.Two(editor_Editor.ModeClasses['Heading Two']);
+                            modeSelect.setDisplayText('Heading Two');
+                            break;
+                        case 'H2':
+                            activeEl = new heading_Heading.Three(editor_Editor.ModeClasses['Heading Three']);
+                            modeSelect.setDisplayText('Heading Three');
+                            break;
+                        case 'H3':
+                            activeEl = new paragraph_Paragraph(editor_Editor.ModeClasses['Paragraph']);
+                            modeSelect.setDisplayText('Paragraph');
+                            break;
+                        case 'P':
+                            activeEl = new paragraph_Paragraph(editor_Editor.ModeClasses['Paragraph']);
+                            modeSelect.setDisplayText('Paragraph');
+                            break;
+                    }
+                        
+                    header.addElement(activeEl);
                     e.preventDefault ();
+
                     return;
-                } else  if (e.key == "Enter" && isIn (this.editor.activeElement.getTagName(), ['PARAGRAPH', 'ANCHOR'])) {
-                    this.editor.activeElement.appendChild(new Element('br'));
+                } else if (e.key == "Tab") {
                     e.preventDefault ();
-                    return;
+
+                    console.log ('tagname', tagname, tagname == "PRE", isIn (tagname, ['PRE']));
+                    if (tagname == 'PRE') {
+                        var sel = document.getSelection();
+                        var range = sel.getRangeAt(0);
+                        var tabNode = document.createTextNode('\t');
+                        range.insertNode(tabNode);
+                        sel.collapseToEnd();
+                    }
                 }
             }
         }.bind(this));
+
+    }
+}
+
+class editor_AnchorEditor extends panel_Panel {
+    constructor (txt, okfn, cancelfn) {
+        super();
+        this.addClass('editor-anchor-editor');
+        this.selectedText = new textinput_TextInput();
+        this.selectedText.setValue(txt);
+        this.selectedText.addClass('anchor-editor-selected-text');
+        this.labeledText = new labeledinput_LabeledInput(new label_Label('SelectedText', 'Text: '), this.selectedText);
+        this.labeledText.addClass('anchor-editor-text');
+        this.appendChild(this.labeledText);
+        
+        this.link = new textinput_TextInput();
+        this.link.addClass('anchor-editor-link-text');
+        this.labeledLink = new labeledinput_LabeledInput(new label_Label('LinkText', 'Link: '), this.link);
+        this.labeledLink.addClass('anchor-editor-link');
+        this.appendChild(this.labeledLink);
+
+        this.buttonGroup = new buttongroup_ButtonGroup (buttongroup_ButtonGroup.Direction.Horizontal);
+        this.cancelButton = new buttoninput_ButtonInput ('Cancel');
+        this.cancelButton.addEventListener('click', cancelfn);
+
+        this.buttonGroup.appendChild(this.cancelButton);
+        this.okButton = new buttoninput_ButtonInput ('Ok');
+        this.okButton.addEventListener('click', okfn);
+        this.buttonGroup.appendChild(this.okButton);
+        this.buttonGroup.addClass('anchor-editor-buttongroup');
+        this.appendChild(this.buttonGroup);
 
     }
 }
@@ -24702,7 +25032,7 @@ var Communication = {
 
 
 var SoftSprocket = {
-	Element: Object.assign(Element),
+	Element: Object.assign(element_Element),
 	Footer: Object.assign(footer_Footer),
 	Header: Object.assign(header_Header),
 	Title: Object.assign(title_Title),
