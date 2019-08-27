@@ -8,3 +8,5 @@ cert_chain.txt
 touchsrv
 tmp
 
+safe
+safe/*

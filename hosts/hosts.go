@@ -1,15 +1,49 @@
 package hosts
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"plugin"
 	"regexp"
-	"touch/session"
+	"time"
 )
 
+type Duration struct {
+	time.Duration
+}
+
+func (d Duration) MarshalJSON() ([]byte, error) {
+	return json.Marshal(d.String())
+}
+
+func (d *Duration) UnmarshalJSON(b []byte) error {
+	var v interface{}
+	if err := json.Unmarshal(b, &v); err != nil {
+		return err
+	}
+	switch value := v.(type) {
+	case float64:
+		d.Duration = time.Duration(value)
+		return nil
+	case string:
+		var err error
+		d.Duration, err = time.ParseDuration(value)
+		if err != nil {
+			return err
+		}
+		return nil
+	default:
+		return errors.New("invalid duration")
+	}
+}
+
+type Message struct {
+	Elapsed Duration `json:"elapsed"`
+}
 type Handler interface {
 	Handle(w http.ResponseWriter, req *http.Request)
 }
@@ -20,11 +54,10 @@ type ApiAction struct {
 }
 
 type Host struct {
-	Host           string
-	BaseDir        string
-	SessionManager *session.SessionManager
-	Replace        map[string]string
-	ApiActions     []ApiAction
+	Host       string
+	BaseDir    string
+	Replace    map[string]string
+	ApiActions []ApiAction
 }
 
 //var loadedPlugins [string]func

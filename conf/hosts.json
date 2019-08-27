@@ -46,6 +46,7 @@
 			"Match": "/api/contact",
 			"Plugin": "./plugs/contact/contact.so"
 		}]
+
 	},
 	{
 		"Host": "gmartin.name",

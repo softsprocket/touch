@@ -1,4 +1,6 @@
 {
-    "Debug": true,
-    "DebugHost": "softsprocket.com"
+    "session": {
+        "InactiveTimeout": "30m",
+        "AbsoluteTimeout": "12h"
+    }
 }
